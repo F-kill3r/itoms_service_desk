@@ -15,7 +15,7 @@ public class IncidentService {
 
     private final IncidentRepository incidentRepository;
 
-    public void createIncident(IncidentRequest incidentRequest) {
+    public Incident createIncident(IncidentRequest incidentRequest) {
 
         Incident incident = new Incident();
 
@@ -28,6 +28,6 @@ public class IncidentService {
         //String createrById = request.getHeader("X-User-Id");
         //String creater = request.getHeader("X-User-Name");
 
-        incidentRepository.save(incident);
+        return incidentRepository.save(incident);
     }
 }

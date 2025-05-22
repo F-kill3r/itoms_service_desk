@@ -13,5 +13,4 @@ public class ServiceDeskApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceDeskApplication.class, args);
     }
-
 }
