@@ -2,10 +2,11 @@ package com.capston_design.fkiller.itoms.service_desk.model.enums;
 
 import java.util.Arrays;
 
-public enum Status {
-    Completed, Incomplete;
+public enum Priority {
+    URGENT,
+    RELAXED;
 
-    public static Status from(String value) {
+    public static Priority from(String value) {
         return Arrays.stream(values())
                 .filter(v -> v.name().equalsIgnoreCase(value))
                 .findFirst()

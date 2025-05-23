@@ -1,14 +1,14 @@
 spring:
   application:
-    name: ServiceDesk
+    name: user-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/service_desk
-    username: root
-    password: mysql
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: ${DDL_ENV}
     open-in-view: true
     show-sql: true
     properties:
@@ -18,4 +18,4 @@ spring:
 
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    path: ${SWAGGER_PATH}/swagger-ui.html

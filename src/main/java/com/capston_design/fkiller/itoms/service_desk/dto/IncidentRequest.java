@@ -4,5 +4,6 @@ import java.time.LocalDateTime;
 
 public record IncidentRequest(
         String title,
-        String content
+        String content,
+        String priority
 ) {}
