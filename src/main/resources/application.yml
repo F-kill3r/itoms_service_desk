@@ -1,20 +1,11 @@
 spring:
-  application:
-    name: ServiceDesk
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: ${DDL_ENV}
-    open-in-view: true
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        default_batch_fetch_size: 100
-springdoc:
-  swagger-ui:
-    path: ${SWAGGER_PATH}/swagger-ui.html
+  # settings for profile
+  profiles:
+    active: local  # if you want to have the environment of the develop server, then it should be dev not local
+    include: secret
+  # settings for multipart data such as image
+
+  servlet:
+    multipart:
+      max-file-size: 10GB
+      max-request-size: 10GB
