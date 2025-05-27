@@ -14,18 +14,22 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name= "t_incident")
+@Table(name = "t_incident")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Incident extends BaseEntity {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
+
+    @PrePersist
+    public void generateId() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+        }
+    }
 
     private String title;
     private String content;
@@ -41,10 +45,10 @@ public class Incident extends BaseEntity {
     private Priority priority;
 
     private UUID ticketByID;
-
     private UUID createrById;
     private UUID chargerById;
 
     private String creater;
     private String charger;
 }
+
