@@ -1,6 +1,9 @@
 package com.capston_design.fkiller.itoms.service_desk.service;
 
+import com.capston_design.fkiller.itoms.service_desk.apiPayload.ApiResponse;
+import com.capston_design.fkiller.itoms.service_desk.client.UserClient;
 import com.capston_design.fkiller.itoms.service_desk.dto.IncidentRequest;
+import com.capston_design.fkiller.itoms.service_desk.dto.UserCreateResponseDTO;
 import com.capston_design.fkiller.itoms.service_desk.model.Incident;
 import com.capston_design.fkiller.itoms.service_desk.model.enums.Priority;
 import com.capston_design.fkiller.itoms.service_desk.model.enums.Status;
@@ -16,6 +19,7 @@ import java.time.LocalDateTime;
 public class IncidentService {
 
     private final IncidentRepository incidentRepository;
+    private final UserClient userClient;
 
     @Transactional
     public Incident createIncident(IncidentRequest incidentRequest) {
@@ -30,6 +34,16 @@ public class IncidentService {
         incident.setPriority(Priority.from(incidentRequest.priority()));
         //String createrById = request.getHeader("X-User-Id");
         //String creater = request.getHeader("X-User-Name");
+
+        ApiResponse<UserCreateResponseDTO> userResponse = userClient.getRandomOutsourcedUser();
+        if (userResponse == null || !Boolean.TRUE.equals(userResponse.getIsSuccess())
+                || userResponse.getResult() == null) {
+            throw new IllegalStateException("UserService로부터 랜덤 유저를 불러오지 못했습니다.");
+        }
+        UserCreateResponseDTO user = userResponse.getResult();
+
+        incident.setCharger(user.getName());
+        incident.setChargerById(user.getId());
 
         return incidentRepository.save(incident);
     }

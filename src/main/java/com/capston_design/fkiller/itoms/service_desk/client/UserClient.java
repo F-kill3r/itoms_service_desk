@@ -6,5 +6,5 @@ import org.springframework.web.service.annotation.GetExchange;
 
 public interface UserClient {
     @GetExchange("/api/user/randomMember")
-    ApiResponse<UserCreateResponseDTO> getRandomMember();
+    ApiResponse<UserCreateResponseDTO> getRandomOutsourcedUser();
 }
