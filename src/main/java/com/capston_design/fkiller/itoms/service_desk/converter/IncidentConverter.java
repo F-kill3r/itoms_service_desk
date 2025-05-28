@@ -19,6 +19,8 @@ public class IncidentConverter {
                 .chargerById(incident.getChargerById())
                 .creater(incident.getCreater())
                 .charger(incident.getCharger())
+                .createdAt(incident.getCreatedAt())
+                .updatedAt(incident.getUpdatedAt())
                 .build();
     }
 }
