@@ -1,11 +1,91 @@
-spring:
-  # settings for profile
-  profiles:
-    active: local  # if you want to have the environment of the develop server, then it should be dev not local
-    include: secret
-  # settings for multipart data such as image
+# 통신 방식 설정 (기본값: rest)
+communication:
+  type: ${COMMUNICATION_TYPE:rest}
 
-  servlet:
-    multipart:
-      max-file-size: 10GB
-      max-request-size: 10GB
+# MSA 서비스 URL 설정
+services:
+  user-service:
+    url: ${USER_SERVICE_URL:http://localhost:8081}
+  notification-service:
+    url: ${NOTIFICATION_SERVICE_URL:http://localhost:8082}
+  analytics-service:
+    url: ${ANALYTICS_SERVICE_URL:http://localhost:8083}
+
+# 통합 통신 설정
+messaging:
+  # Resilience 패턴 설정 (자동으로 적용됨)
+  resilience:
+    circuit-breaker:
+      failure-rate-threshold: ${CIRCUIT_BREAKER_FAILURE_RATE:50}
+      wait-duration-in-open-state: ${CIRCUIT_BREAKER_WAIT_DURATION:30000}
+      sliding-window-size: ${CIRCUIT_BREAKER_SLIDING_WINDOW_SIZE:10}
+    retry:
+      max-attempts: ${RETRY_MAX_ATTEMPTS:3}
+      wait-duration: ${RETRY_WAIT_DURATION:1000}
+      exponential-backoff-multiplier: ${RETRY_BACKOFF_MULTIPLIER:2.0}
+  
+  # REST API 설정
+  rest:
+    base-url: ${REST_BASE_URL:http://localhost:8080}
+    timeout: ${REST_TIMEOUT:30000}
+    endpoints:
+      incident-create: /api/external/incident
+      incident-update: /api/external/incident/update
+      incident-response: /api/external/incident/response
+  
+  # Kafka 설정 (선택적 사용)
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:100.69.13.48:3001,100.69.13.48:3002,100.69.13.48:3003}
+    topics:
+      incident-create: ${KAFKA_TOPIC_INCIDENT_CREATE:itoms.incident.create}
+      incident-update: ${KAFKA_TOPIC_INCIDENT_UPDATE:itoms.incident.update}
+      incident-response: ${KAFKA_TOPIC_INCIDENT_RESPONSE:itoms.incident.response}
+    producer:
+      acks: ${KAFKA_PRODUCER_ACKS:all}
+      retries: ${KAFKA_PRODUCER_RETRIES:3}
+      batch-size: ${KAFKA_PRODUCER_BATCH_SIZE:16384}
+      linger-ms: ${KAFKA_PRODUCER_LINGER_MS:1}
+      buffer-memory: ${KAFKA_PRODUCER_BUFFER_MEMORY:33554432}
+      key-serializer: ${KAFKA_PRODUCER_KEY_SERIALIZER:org.apache.kafka.common.serialization.StringSerializer}
+      value-serializer: ${KAFKA_PRODUCER_VALUE_SERIALIZER:org.springframework.kafka.support.serializer.JsonSerializer}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:itoms-service-desk}
+      auto-offset-reset: ${KAFKA_CONSUMER_AUTO_OFFSET_RESET:earliest}
+      key-deserializer: ${KAFKA_CONSUMER_KEY_DESERIALIZER:org.apache.kafka.common.serialization.StringDeserializer}
+      value-deserializer: ${KAFKA_CONSUMER_VALUE_DESERIALIZER:org.springframework.kafka.support.serializer.JsonDeserializer}
+
+# 로깅 설정
+logging:
+  level:
+    com.capston_design.fkiller.itoms: ${LOG_LEVEL_ITOMS:DEBUG}
+    org.springframework.kafka: ${LOG_LEVEL_KAFKA:INFO}
+    org.springframework.web.client: ${LOG_LEVEL_WEB:DEBUG}
+    org.apache.kafka: ${LOG_LEVEL_KAFKA_CLIENT:WARN}
+
+# settings for profile
+profiles:
+  active: ${SPRING_PROFILES_ACTIVE:local}  # 환경 변수로 프로파일 설정
+  include: secret
+# settings for multipart data such as image
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: ${DDL_ENV}
+    open-in-view: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+
+springdoc:
+  swagger-ui:
+    path: ${SWAGGER_PATH}/swagger-ui.html
