@@ -45,10 +45,12 @@ public class Incident extends BaseEntity {
     private Priority priority;
 
     private UUID ticketByID;
-    private UUID createrById;
+    private UUID requesterById;
+    private UUID creatorById;
     private UUID chargerById;
 
-    private String creater;
+    private String requester;
+    private String creator;
     private String charger;
 }
 

@@ -28,9 +28,11 @@ public class IncidentResponse {
         private LocalDateTime endDT;
         private Status status;
         private Priority priority;
-        private UUID createrById;
+        private UUID requesterById;
+        private UUID creatorById;
         private UUID chargerById;
-        private String creater;
+        private String requester;
+        private String creator;
         private String charger;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
