@@ -9,14 +9,19 @@ import com.capston_design.fkiller.itoms.service_desk.model.enums.Priority;
 import com.capston_design.fkiller.itoms.service_desk.model.enums.Status;
 import com.capston_design.fkiller.itoms.service_desk.repository.IncidentRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class IncidentService {
+
+    private static final Logger log = LoggerFactory.getLogger(IncidentService.class);
 
     private final IncidentRepository incidentRepository;
     private final UserClient userClient;
@@ -46,5 +51,24 @@ public class IncidentService {
         incident.setChargerById(user.getId());
 
         return incidentRepository.save(incident);
+    }
+
+
+    @Transactional
+    public Incident completeTicket(UUID ticketId, UUID incidentId) {
+        Incident incident = incidentRepository.findById(incidentId)
+            .orElseThrow(() -> new IllegalArgumentException("Incident not found with id: " + incidentId));
+
+        incident.setStatus(Status.Completed);
+        incident.setEndDT(LocalDateTime.now());
+        
+        Incident savedIncident = incidentRepository.save(incident);
+        log.info("Incident completed successfully - Incident ID: {}, Title: {}, Completed by: {}, Completed at: {}", 
+            savedIncident.getId(), 
+            savedIncident.getTitle(),
+            savedIncident.getCharger(),
+            savedIncident.getEndDT());
+        
+        return savedIncident;
     }
 }
