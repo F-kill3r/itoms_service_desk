@@ -10,6 +10,38 @@ services:
       - "${MYSQL_PORT}:3306"
     volumes:
       - ./mysql:/var/lib/mysql
+
+  node-exporter:
+    image: prom/node-exporter:v1.6.1
+    container_name: node-exporter
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+   # volumes:
+   #  - '/:/host:ro,rslave'
+    ports:
+      - "9100:9100"
+    #network_mode: host
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    container_name: cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - net=host \
+      - privileged \
+     # - /cgroup:/cgroup:ro
+    ports:
+      - "9101:8080"
+    restart: unless-stopped
+
   loki:
     image: grafana/loki:main
     container_name: loki
