@@ -40,15 +40,15 @@ public class IncidentService {
         //String createrById = request.getHeader("X-User-Id");
         //String creater = request.getHeader("X-User-Name");
 
-        ApiResponse<UserCreateResponseDTO> userResponse = userClient.getRandomOutsourcedUser();
+        ApiResponse<UserCreateResponseDTO> userResponse = userClient.getRandomRequesterUser();
         if (userResponse == null || !Boolean.TRUE.equals(userResponse.getIsSuccess())
                 || userResponse.getResult() == null) {
             throw new IllegalStateException("UserService로부터 랜덤 유저를 불러오지 못했습니다.");
         }
         UserCreateResponseDTO user = userResponse.getResult();
 
-        incident.setCharger(user.getName());
-        incident.setChargerById(user.getId());
+        incident.setRequester(user.getName());
+        incident.setRequesterById(user.getId());
 
         return incidentRepository.save(incident);
     }
