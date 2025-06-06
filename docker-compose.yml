@@ -30,13 +30,14 @@ services:
     privileged: true
     devices:
       - /dev/kmsg:/dev/kmsg
+    network_mode: "host"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
-      - net=host \
-      - privileged \
+     # - net=host \
+     # - privileged \
      # - /cgroup:/cgroup:ro
     ports:
       - "9101:8080"
