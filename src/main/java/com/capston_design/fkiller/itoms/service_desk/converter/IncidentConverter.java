@@ -15,6 +15,7 @@ public class IncidentConverter {
                 .endDT(incident.getEndDT())
                 .status(incident.getStatus())
                 .priority(incident.getPriority())
+                .ticketByID(incident.getTicketByID())
                 .requesterById(incident.getRequesterById())
                 .creatorById(incident.getCreatorById())
                 .chargerById(incident.getChargerById())

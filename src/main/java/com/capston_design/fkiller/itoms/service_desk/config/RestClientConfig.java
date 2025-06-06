@@ -1,6 +1,7 @@
 package com.capston_design.fkiller.itoms.service_desk.config;
 
 
+import com.capston_design.fkiller.itoms.service_desk.client.TicketClient;
 import com.capston_design.fkiller.itoms.service_desk.client.UserClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,9 @@ public class RestClientConfig {
     @Value("${user.url}")
     private String userServiceUrl;
 
+    @Value("${ticket.url}")
+    private String ticketUrl;
+
     @Bean
     public UserClient userClient() {
         RestClient restClient = RestClient.builder()
@@ -23,5 +27,15 @@ public class RestClientConfig {
         var adapter = RestClientAdapter.create(restClient);
         var factory = HttpServiceProxyFactory.builderFor(adapter).build();
         return factory.createClient(UserClient.class);
+    }
+
+    @Bean
+    public TicketClient ticketClient() {
+        RestClient restClient = RestClient.builder()
+                .baseUrl(ticketUrl)
+                .build();
+        var adapter = RestClientAdapter.create(restClient);
+        var factory = HttpServiceProxyFactory.builderFor(adapter).build();
+        return factory.createClient(TicketClient.class);
     }
 }

@@ -28,6 +28,7 @@ public class IncidentResponse {
         private LocalDateTime endDT;
         private Status status;
         private Priority priority;
+        private UUID ticketByID;
         private UUID requesterById;
         private UUID creatorById;
         private UUID chargerById;

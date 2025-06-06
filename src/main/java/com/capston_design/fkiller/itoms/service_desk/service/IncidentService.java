@@ -1,9 +1,9 @@
 package com.capston_design.fkiller.itoms.service_desk.service;
 
 import com.capston_design.fkiller.itoms.service_desk.apiPayload.ApiResponse;
+import com.capston_design.fkiller.itoms.service_desk.client.TicketClient;
 import com.capston_design.fkiller.itoms.service_desk.client.UserClient;
-import com.capston_design.fkiller.itoms.service_desk.dto.IncidentRequest;
-import com.capston_design.fkiller.itoms.service_desk.dto.UserCreateResponseDTO;
+import com.capston_design.fkiller.itoms.service_desk.dto.*;
 import com.capston_design.fkiller.itoms.service_desk.model.Incident;
 import com.capston_design.fkiller.itoms.service_desk.model.enums.Priority;
 import com.capston_design.fkiller.itoms.service_desk.model.enums.Status;
@@ -25,6 +25,7 @@ public class IncidentService {
 
     private final IncidentRepository incidentRepository;
     private final UserClient userClient;
+    private final TicketClient ticketClient;
 
     @Transactional
     public Incident createIncident(IncidentRequest incidentRequest) {
@@ -50,6 +51,17 @@ public class IncidentService {
         incident.setRequester(user.getName());
         incident.setRequesterById(user.getId());
 
+        incidentRepository.save(incident);
+
+        //Ticket 생성 요청
+        CreateTicketRequestDTO ticketRequest = new CreateTicketRequestDTO(
+                incident.getId(),
+                new RequesterDTO(user.getId().toString(), user.getName())
+        );
+        CreateTicketResponseDTO ticketResponse = ticketClient.createTicket(ticketRequest);
+
+        //ticketId 저장 후 재저장
+        incident.setTicketByID(ticketResponse.getTicketId());
         return incidentRepository.save(incident);
     }
 

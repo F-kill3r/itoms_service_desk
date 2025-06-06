@@ -5,6 +5,6 @@ import com.capston_design.fkiller.itoms.service_desk.dto.UserCreateResponseDTO;
 import org.springframework.web.service.annotation.GetExchange;
 
 public interface UserClient {
-    @GetExchange("/api/user/randomMember")
+    @GetExchange("/api/user/randomRequester")
     ApiResponse<UserCreateResponseDTO> getRandomRequesterUser();
 }
