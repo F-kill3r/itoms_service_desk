@@ -9,7 +9,8 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTicketResponseDTO {
-    private UUID ticketId;
+public class RandomUserResponseDTO {
     private UUID incidentId;
-}
+    private UUID userId;
+    private String userName;
+} 
