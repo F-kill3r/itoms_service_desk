@@ -17,6 +17,6 @@ public class UserKafkaProducer {
     private String userRandomRequestTopic;
 
     public void publishRandomUserRequest(UUID incidentId) {
-        kafkaTemplate.send(userRandomRequestTopic, incidentId.toString(), incidentId);
+        kafkaTemplate.send(userRandomRequestTopic, incidentId.toString(), incidentId.toString());
     }
 } 
