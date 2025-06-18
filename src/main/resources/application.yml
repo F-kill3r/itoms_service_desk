@@ -20,4 +20,3 @@ spring:
       user:
         host: ${USER_HOST}
         port: ${USER_ADDRESS}
-

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package com.capston_design.fkiller.itoms.ticket;
+
+option java_outer_classname = "TicketProto";
+
+service TicketService {
+  rpc createTicket (CreateTicketRequest) returns (CreateTicketResponse);
+  rpc completeTicket (completeTicketRequest) returns (google.protobuf.Empty);
+}
+
+message CreateTicketRequest {
+  string incident_id = 1;
+  string requester_id = 2;
+  string requester_name = 3;
+}
+
+message CreateTicketResponse {
+  string ticket_id = 1;
+}
+
+message completeTicketRequest {
+  string ticketId = 1;
+  string ticketName = 2;
+  string ticketStatus = 3;
+  string completionTime = 4;
+}

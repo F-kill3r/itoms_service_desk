@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package com.capston_design.fkiller.itoms.user;
+
+option java_outer_classname = "UserProto";
+
+service UserService {
+  rpc getRandomCreatorInfo (google.protobuf.Empty) returns (CommonCreatorInfoResponse);
+  rpc getRandomRequesterUser (google.protobuf.Empty) returns (UserCreateResponse);
+}
+
+message CreatorInfoResponse {
+  string id = 1;
+  string name = 2;
+  string category = 3;
+}
+
+message CommonCreatorInfoResponse {
+  bool isSuccess = 1;
+  string code = 2;
+  string message = 3;
+  CreatorInfoResponse result = 4;
+}
+
+message UserCreateResponse {
+  string id = 1;
+  string name = 2;
+  string category = 3;
+}
+

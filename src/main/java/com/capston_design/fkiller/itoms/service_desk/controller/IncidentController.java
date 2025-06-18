@@ -7,16 +7,19 @@ import com.capston_design.fkiller.itoms.service_desk.dto.IncidentResponse;
 import com.capston_design.fkiller.itoms.service_desk.dto.TicketCompletedRequestDTO;
 import com.capston_design.fkiller.itoms.service_desk.model.Incident;
 import com.capston_design.fkiller.itoms.service_desk.service.IncidentService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/incident")
-@RequiredArgsConstructor
 public class IncidentController {
     private final IncidentService incidentService;
+
+    public IncidentController(@Qualifier("grpc") IncidentService incidentService) {
+        this.incidentService = incidentService;
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<IncidentResponse.IncidentCreateResponseDTO>> createIncident(
