@@ -9,3 +9,15 @@ spring:
     multipart:
       max-file-size: 10GB
       max-request-size: 10GB
+
+  grpc:
+    server:
+      port: ${GRPC_PORT}
+    client:
+      ticket-core:
+        host: ${TICKET_CORE_HOST}
+        port: ${TICKET_CORE_ADDRESS}
+      user:
+        host: ${USER_HOST}
+        port: ${USER_ADDRESS}
+
